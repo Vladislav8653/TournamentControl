@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-
 namespace TournamentControl
 {
     public partial class ControlForm : Form
     {
-        private List<PlayerControl> playerControls = new();
-        private TextBox txtTeam;
-        private ComboBox cmbLang;
+        private readonly List<PlayerControl> _playerControls = new();
+        private TextBox _txtTeam;
+        private ComboBox _cmbLang;
 
         public ControlForm()
         {
@@ -48,7 +43,7 @@ namespace TournamentControl
             for (int i = 0; i < 5; i++)
             {
                 var pc = new PlayerControl { Dock = DockStyle.Top, Margin = new Padding(0, 15, 0, 15) };
-                playerControls.Add(pc);
+                _playerControls.Add(pc);
                 playersPanel.Controls.Add(pc);
             }
 
@@ -59,19 +54,19 @@ namespace TournamentControl
             teamPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40));
 
             teamPanel.Controls.Add(new Label { Text = "Team:", Anchor = AnchorStyles.Left, AutoSize = true }, 0, 0);
-            txtTeam = new TextBox { Width = 200, Anchor = AnchorStyles.Left };
-            teamPanel.Controls.Add(txtTeam, 1, 0);
+            _txtTeam = new TextBox { Width = 200, Anchor = AnchorStyles.Left };
+            teamPanel.Controls.Add(_txtTeam, 1, 0);
 
             teamPanel.Controls.Add(new Label { Text = "Language:", Anchor = AnchorStyles.Left, AutoSize = true }, 2, 0);
-            cmbLang = new ComboBox { Width = 150, Anchor = AnchorStyles.Left, DropDownStyle = ComboBoxStyle.DropDownList };
-            cmbLang.Items.AddRange(new string[] { "English", "Russian", "Spanish" });
-            cmbLang.SelectedIndex = 0;
-            teamPanel.Controls.Add(cmbLang, 3, 0);
+            _cmbLang = new ComboBox { Width = 150, Anchor = AnchorStyles.Left, DropDownStyle = ComboBoxStyle.DropDownList };
+            _cmbLang.Items.AddRange(new string[] { "English", "Polish", "Spanish" });
+            _cmbLang.SelectedIndex = 0;
+            teamPanel.Controls.Add(_cmbLang, 3, 0);
 
             var btnSave = new Button { Text = "Save", AutoSize = true };
             var btnExit = new Button { Text = "Exit", AutoSize = true };
             btnExit.Click += (s, e) => this.Close();
-            btnSave.Click += (s, e) => OnSaveClicked(txtTeam.Text);
+            btnSave.Click += (s, e) => OnSaveClicked(_txtTeam.Text);
             this.AcceptButton = btnSave;
             this.CancelButton = btnExit;
 
@@ -94,17 +89,17 @@ namespace TournamentControl
 
         private void OnSaveClicked(string teamName)
         {
-            var players = playerControls.Select(p => p.GetPlayer()).ToList();
+            var players = _playerControls.Select(p => p.GetPlayer()).ToList();
             var captains = players.Where(p => p.IsCaptain).ToList();
 
             if (captains.Count != 1)
             {
-                MessageBox.Show("Команда должна иметь ровно одного капитана!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("The team must have exactly one captain!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             var rankValues = new Dictionary<string, int> {
-                ["Unranked"] = 0, ["Iron"] = 1, ["Bronze"] = 2, ["Silver"] = 3, ["Gold"] = 4
+                ["----"] = 0, ["Iron"] = 1, ["Bronze"] = 2, ["Silver"] = 3, ["Gold"] = 4
             };
 
             var sorted = players.OrderByDescending(p => rankValues[p.Rank]).ToList();

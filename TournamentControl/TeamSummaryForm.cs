@@ -4,8 +4,8 @@
     {
         public TeamSummaryForm(string teamName, List<Player> players, double avgEffectiveness)
         {
-            this.Text = $"{teamName} — Эффективность: {avgEffectiveness:F2}";
-            this.Font = new System.Drawing.Font("Segoe UI", 14);
+            this.Text = $"{teamName} — Efficiency: {avgEffectiveness:F2}";
+            this.Font = new Font("Segoe UI", 14);
             this.Width = 600;
             this.Height = 400;
             this.StartPosition = FormStartPosition.CenterScreen;
