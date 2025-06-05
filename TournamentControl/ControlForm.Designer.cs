@@ -1,6 +1,6 @@
 ﻿namespace TournamentControl;
 
-partial class Form1
+partial class ControlForm
 {
     /// <summary>
     ///  Required designer variable.

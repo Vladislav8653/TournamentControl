@@ -5,26 +5,27 @@ using System.Windows.Forms;
 
 namespace TournamentControl
 {
-        public partial class Form1 : Form
+    public partial class ControlForm : Form
     {
         private List<PlayerControl> playerControls = new();
         private TextBox txtTeam;
         private ComboBox cmbLang;
 
-        public Form1()
+        public ControlForm()
         {
             InitializeComponent();
             InitializeLayout();
+            ApplyLoLDarkTheme();
         }
 
-          private void InitializeLayout()
+        private void InitializeLayout()
         {
             this.Text = "Tournament Control";
             this.StartPosition = FormStartPosition.CenterScreen;
             this.WindowState = FormWindowState.Normal;
-            this.Size = new System.Drawing.Size(1280, 800);
-            this.MinimumSize = new System.Drawing.Size(1024, 768);
-            this.Font = new System.Drawing.Font("Segoe UI", 14);
+            this.Size = new Size(1280, 800);
+            this.MinimumSize = new Size(1024, 768);
+            this.Font = new Font("Segoe UI", 14);
 
             var mainLayout = new TableLayoutPanel
             {
@@ -51,7 +52,6 @@ namespace TournamentControl
                 playersPanel.Controls.Add(pc);
             }
 
-            // Team Info
             var teamPanel = new TableLayoutPanel { ColumnCount = 4, AutoSize = true, Dock = DockStyle.Top, Padding = new Padding(0, 0, 0, 20) };
             teamPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             teamPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40));
@@ -63,12 +63,11 @@ namespace TournamentControl
             teamPanel.Controls.Add(txtTeam, 1, 0);
 
             teamPanel.Controls.Add(new Label { Text = "Language:", Anchor = AnchorStyles.Left, AutoSize = true }, 2, 0);
-            cmbLang = new ComboBox { Width = 150, Anchor = AnchorStyles.Left };
-            cmbLang.Items.AddRange(new string[] { "English", "Polish", "Spanish" });
+            cmbLang = new ComboBox { Width = 150, Anchor = AnchorStyles.Left, DropDownStyle = ComboBoxStyle.DropDownList };
+            cmbLang.Items.AddRange(new string[] { "English", "Russian", "Spanish" });
             cmbLang.SelectedIndex = 0;
             teamPanel.Controls.Add(cmbLang, 3, 0);
 
-            // Buttons
             var btnSave = new Button { Text = "Save", AutoSize = true };
             var btnExit = new Button { Text = "Exit", AutoSize = true };
             btnExit.Click += (s, e) => this.Close();
@@ -84,7 +83,7 @@ namespace TournamentControl
                 Padding = new Padding(10),
                 Margin = new Padding(0, 20, 0, 0)
             };
-            buttonPanel.Controls.AddRange([btnSave, btnExit]);
+            buttonPanel.Controls.AddRange(new Control[] { btnSave, btnExit });
 
             mainLayout.Controls.Add(playersPanel);
             mainLayout.Controls.Add(teamPanel);
@@ -105,7 +104,7 @@ namespace TournamentControl
             }
 
             var rankValues = new Dictionary<string, int> {
-                ["----"] = 0, ["Iron"] = 1, ["Bronze"] = 2, ["Silver"] = 3, ["Gold"] = 4
+                ["Unranked"] = 0, ["Iron"] = 1, ["Bronze"] = 2, ["Silver"] = 3, ["Gold"] = 4
             };
 
             var sorted = players.OrderByDescending(p => rankValues[p.Rank]).ToList();
@@ -114,6 +113,24 @@ namespace TournamentControl
             var summary = new TeamSummaryForm(teamName, sorted, avg);
             summary.StartPosition = FormStartPosition.CenterScreen;
             summary.Show();
+        }
+
+        private void ApplyLoLDarkTheme()
+        {
+            Color background = Color.FromArgb(18, 18, 18);
+            Color foreground = Color.Goldenrod;
+            Color inputBackground = Color.FromArgb(35, 35, 35);
+
+            this.BackColor = background;
+            void ApplyTheme(Control control)
+            {
+                control.BackColor = control is TextBox or ComboBox ? inputBackground : background;
+                control.ForeColor = foreground;
+
+                foreach (Control child in control.Controls)
+                    ApplyTheme(child);
+            }
+            ApplyTheme(this);
         }
     }
 
