@@ -1,6 +1,6 @@
 ﻿namespace TournamentControl
 {
-    public class PlayerControl : UserControl
+    public sealed class PlayerControl : UserControl
     {
         private ComboBox cmbRole = new();
         private TextBox txtName = new();
@@ -29,9 +29,9 @@
             layout.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
 
-            cmbRole.Items.AddRange(new string[] { "Top", "Jungle", "Mid", "ADC", "Support" });
+            cmbRole.Items.AddRange(["Top", "Jungle", "Mid", "ADC", "Support"]);
             cmbRole.SelectedIndex = 0;
-            cmbRank.Items.AddRange(new string[] { "Unranked", "Iron", "Bronze", "Silver", "Gold" });
+            cmbRank.Items.AddRange(["----", "Iron", "Bronze", "Silver", "Gold"]);
             cmbRank.SelectedIndex = 0;
 
             chkCaptain.AutoSize = true;
@@ -57,7 +57,7 @@
             {
                 Role = cmbRole.SelectedItem?.ToString() ?? "",
                 Name = txtName.Text,
-                Rank = cmbRank.SelectedItem?.ToString() ?? "Unranked",
+                Rank = cmbRank.SelectedItem?.ToString() ?? "----",
                 IsCaptain = chkCaptain.Checked
             };
         }

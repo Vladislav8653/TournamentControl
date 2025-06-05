@@ -17,21 +17,22 @@ namespace TournamentControl
             InitializeLayout();
         }
 
-        private void InitializeLayout()
+          private void InitializeLayout()
         {
             this.Text = "Tournament Control";
-            this.WindowState = FormWindowState.Maximized;
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Font = new System.Drawing.Font("Segoe UI", 14);
+            this.WindowState = FormWindowState.Normal;
+            this.Size = new System.Drawing.Size(1280, 800);
             this.MinimumSize = new System.Drawing.Size(1024, 768);
+            this.Font = new System.Drawing.Font("Segoe UI", 14);
 
             var mainLayout = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 ColumnCount = 1,
                 AutoScroll = true,
-                Padding = new Padding(20),
-                AutoSize = true
+                Padding = new Padding(30),
+                AutoSize = true,
             };
 
             var playersPanel = new TableLayoutPanel
@@ -39,18 +40,19 @@ namespace TournamentControl
                 Dock = DockStyle.Top,
                 ColumnCount = 1,
                 RowCount = 5,
-                AutoSize = true
+                AutoSize = true,
+                Padding = new Padding(0, 0, 0, 20)
             };
 
             for (int i = 0; i < 5; i++)
             {
-                var pc = new PlayerControl { Dock = DockStyle.Top, Margin = new Padding(0, 10, 0, 10) };
+                var pc = new PlayerControl { Dock = DockStyle.Top, Margin = new Padding(0, 15, 0, 15) };
                 playerControls.Add(pc);
                 playersPanel.Controls.Add(pc);
             }
 
             // Team Info
-            var teamPanel = new TableLayoutPanel { ColumnCount = 4, AutoSize = true, Dock = DockStyle.Top };
+            var teamPanel = new TableLayoutPanel { ColumnCount = 4, AutoSize = true, Dock = DockStyle.Top, Padding = new Padding(0, 0, 0, 20) };
             teamPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             teamPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40));
             teamPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
@@ -62,7 +64,7 @@ namespace TournamentControl
 
             teamPanel.Controls.Add(new Label { Text = "Language:", Anchor = AnchorStyles.Left, AutoSize = true }, 2, 0);
             cmbLang = new ComboBox { Width = 150, Anchor = AnchorStyles.Left };
-            cmbLang.Items.AddRange(new string[] { "English", "Russian", "Spanish" });
+            cmbLang.Items.AddRange(new string[] { "English", "Polish", "Spanish" });
             cmbLang.SelectedIndex = 0;
             teamPanel.Controls.Add(cmbLang, 3, 0);
 
@@ -79,9 +81,10 @@ namespace TournamentControl
                 FlowDirection = FlowDirection.LeftToRight,
                 Dock = DockStyle.Top,
                 AutoSize = true,
-                Padding = new Padding(10)
+                Padding = new Padding(10),
+                Margin = new Padding(0, 20, 0, 0)
             };
-            buttonPanel.Controls.AddRange(new Control[] { btnSave, btnExit });
+            buttonPanel.Controls.AddRange([btnSave, btnExit]);
 
             mainLayout.Controls.Add(playersPanel);
             mainLayout.Controls.Add(teamPanel);
@@ -102,7 +105,7 @@ namespace TournamentControl
             }
 
             var rankValues = new Dictionary<string, int> {
-                ["Unranked"] = 0, ["Iron"] = 1, ["Bronze"] = 2, ["Silver"] = 3, ["Gold"] = 4
+                ["----"] = 0, ["Iron"] = 1, ["Bronze"] = 2, ["Silver"] = 3, ["Gold"] = 4
             };
 
             var sorted = players.OrderByDescending(p => rankValues[p.Rank]).ToList();
