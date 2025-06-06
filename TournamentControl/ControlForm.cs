@@ -13,7 +13,7 @@ namespace TournamentControl
             ApplyLoLDarkTheme();
         }
 
-        private void InitializeLayout()
+        private void InitializeLayout() // UI дизайн
         {
             this.Text = "Tournament Control";
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -87,7 +87,7 @@ namespace TournamentControl
             this.Controls.Add(mainLayout);
         }
 
-        private void OnSaveClicked(string teamName)
+        private void OnSaveClicked(string teamName) // обработчик кнопки Save
         {
             var players = _playerControls.Select(p => p.GetPlayer()).ToList();
             var captains = players.Where(p => p.IsCaptain).ToList();

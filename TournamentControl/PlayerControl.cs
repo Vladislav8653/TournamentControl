@@ -1,6 +1,6 @@
 ﻿namespace TournamentControl
 {
-    public sealed class PlayerControl : UserControl
+    public class PlayerControl : UserControl
     {
         private ComboBox cmbRole = new();
         private TextBox txtName = new();
@@ -35,7 +35,7 @@
             cmbRank.SelectedIndex = 0;
 
             chkCaptain.AutoSize = true;
-            chkCaptain.Text = "  Captain"; // Padding workaround for font clipping
+            chkCaptain.Text = "  Captain"; 
             chkCaptain.Padding = new Padding(5, 5, 5, 5);
 
             txtName.Width = 150;
